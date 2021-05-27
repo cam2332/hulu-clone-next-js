@@ -1,6 +1,12 @@
 const API_KEY = process.env.API_KEY
 
 export default {
+    fetchMovieDetails: (movieId) => {
+        return {
+            title: 'Movie Details',
+            url: `/movie/${movieId}?api_key=${API_KEY}&append_to_response=videos`,
+        }
+    },
     fetchTrending: {
         title: 'Trending',
         url: `/trending/all/week?api_key=${API_KEY}&language=en-US`,

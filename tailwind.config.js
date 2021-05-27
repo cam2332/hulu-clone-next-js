@@ -7,6 +7,12 @@ module.exports = {
             screens: {
                 '3xl': '2000px',
             },
+            padding: {
+                '2/3': '66%',
+            },
+            zIndex: {
+                '-1': '-1',
+            },
         },
     },
     variants: {
