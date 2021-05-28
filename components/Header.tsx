@@ -9,7 +9,7 @@ import {
 import Image from 'next/image'
 import HeaderItem from './HeaderItem'
 
-function Header() {
+function Header(): JSX.Element {
   return (
     <header className='flex flex-col sm:flex-row m-5 justify-between 
     items-center h-auto'>
@@ -24,8 +24,8 @@ function Header() {
       <Image
         className='object-contain'
         src='/hulu-white.png'
-        width={200}
-        height={100}
+        width={150}
+        height={75}
       />
     </header>
   )

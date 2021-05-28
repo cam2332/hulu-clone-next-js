@@ -1,7 +1,7 @@
 import requests from '../utils/requests'
-import {useRouter} from 'next/router'
+import { useRouter } from 'next/router'
 
-function Nav() {
+function Nav(): JSX.Element {
   const router = useRouter()
 
   return (

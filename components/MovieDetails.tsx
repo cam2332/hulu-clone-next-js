@@ -1,25 +1,33 @@
 import React from 'react'
 import { PlayIcon, ArrowRightIcon } from '@heroicons/react/solid'
-function MovieDetails({ props }) {
+import MovieDetailsData from '../types/MovieDetailsData'
+import TvShowDetailsData from '../types/TvShowDetailsData'
+
+function MovieDetails({ movie }: {
+  movie: MovieDetailsData | TvShowDetailsData
+}): JSX.Element {
   const [overviewExpanded, setOverviewExpanded] = React.useState(false)
 
   return (
-    <div className='flex flex-col px-10 md:px-20 md:py-16 space-y-7 md:space-y-14 min-h-full'>
+    <div className='flex flex-col px-10 md:px-20 md:py-16 space-y-7 
+      md:space-y-14 min-h-full'>
       <p className='text-white font-bold text-3xl md:text-6xl'>
-        {props.title || props.original_title}
+        {movie.title || movie.original_title}
       </p>
       <p
         onClick={() => setOverviewExpanded(!overviewExpanded)}
         className={`text-white max-w-sm md:max-w-2xl md:text-xl 
         ${!overviewExpanded && 'truncate'} md:whitespace-normal`}>
-        {props.overview}
+        {movie.overview}
       </p>
-      <p className='flex items-center opacity-100 font-white font-bold md:text-xl'>
-        {props.genres && props.genres.length > 0 &&
-          `${props.genres.map(genre => genre.name + ' • ').join('')}`}{' '}
-          {props.media_type && `${props.media_type} •`}{' '}
-        {props.release_date && props.release_date.substring(0, 4) ||
-          props.first_air_date && props.first_air_date.substring(0, 4)}{' '}
+      <p className='flex items-center opacity-100 font-white 
+        font-bold md:text-xl'>
+        {movie.genres && movie.genres.length > 0 &&
+          `${movie.genres.map(genre => genre.name + ' • ').join('')}`}{' '}
+        {(movie as MovieDetailsData).release_date &&
+          (movie as MovieDetailsData).release_date.substring(0, 4) ||
+        (movie as TvShowDetailsData).first_air_date &&
+          (movie as TvShowDetailsData).first_air_date.substring(0, 4)}{' '}
       </p>
       <div className='flex space-x-4 h-11 md:h-14'>
         <div className='flex items-center justify-center w-32 md:w-40
