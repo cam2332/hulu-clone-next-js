@@ -55,7 +55,7 @@ export default function Details(
           }
           />
       </div>
-      <div className='pb-10 md:pb-0 relative md:static pt-2/3 md:pt-6'>
+      <div className='pb-10 md:pb-0 relative md:static'>
         <div
           className='absolute top-0 left-0 right-20 overflow-hidden
             bg-gradient-to-t md:bg-gradient-to-r from-[#204fa5] to-[#204ea500]

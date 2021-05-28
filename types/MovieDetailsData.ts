@@ -4,6 +4,7 @@ import GenreData from './GenreData'
 import CompanyData from './CompanyData'
 import CountryData from './CountryData'
 import LanguageData from './LanguageData'
+import VideoData from './VideoData'
 
 export default interface MovieDetailsData extends MovieData {
   belongs_to_collection: CollectionData;
@@ -18,4 +19,5 @@ export default interface MovieDetailsData extends MovieData {
 	spoken_languages: LanguageData[];
 	status: string;
 	tagline: string;
+	videos: {results: VideoData[]}
 }

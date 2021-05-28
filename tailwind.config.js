@@ -8,6 +8,7 @@ module.exports = {
                 '3xl': '2000px',
             },
             padding: {
+                '1/2': '50%',
                 '2/3': '66%',
             },
             zIndex: {

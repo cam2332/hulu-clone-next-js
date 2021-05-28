@@ -4,6 +4,7 @@ import GenreData from './GenreData'
 import NetworkData from './NetworkData'
 import CompanyData from './CompanyData'
 import SeasonData from './SeasonData'
+import VideoData from './VideoData'
 
 export default interface TvShowDetailsData extends TvShowData {
   created_by: PersonData[]
@@ -20,4 +21,5 @@ export default interface TvShowDetailsData extends TvShowData {
 	status: string
 	type: string
 	last_air_date: Date
+	videos: {results: VideoData[]}
 }
