@@ -20,7 +20,7 @@ function MovieDetails({ movie }: {
         ${!overviewExpanded && 'truncate'} md:whitespace-normal`}>
         {movie.overview}
       </p>
-      <p className='flex items-center opacity-100 font-white 
+      <p className='flex items-center opacity-100 text-white 
         font-bold md:text-xl'>
         {movie.genres && movie.genres.length > 0 &&
           `${movie.genres.map(genre => genre.name + ' • ').join('')}`}{' '}
