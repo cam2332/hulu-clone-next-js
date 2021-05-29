@@ -1,5 +1,3 @@
-import GenreData from '../types/GenreData'
-
 const API_KEY = process.env.API_KEY
 
 interface Request {
@@ -19,17 +17,20 @@ export const fetchMovieCredits = (movieId: string): Request => {
     url: `/movie/${movieId}/credits?api_key=${API_KEY}`,
   }
 }
-export const fetchMoviesByGenre = (genre: GenreData): Request => {
+export const fetchMovieRecommendations = (movieId: string): Request => {
   return {
-    title: genre.name,
-    url: `/discover/movie?api_key=${API_KEY}&with_genres=${genre.id}`,
+    title: 'Movie Recommendations',
+    url: `/movie/${movieId}/recommendations?api_key=${API_KEY}`,
   }
 }
-const fetchTrending = {
+export const fetchMoviesByGenreId = (genreId: string): string => {
+  return `/discover/movie?api_key=${API_KEY}&with_genres=${genreId}`
+}
+export const fetchTrending = {
   title: 'Trending',
   url: `/trending/all/week?api_key=${API_KEY}&language=en-US`,
 }
-const fetchTopRated = {
+export const fetchTopRated = {
   title: 'Top rated',
   url: `/movie/top_rated?api_key=${API_KEY}&language=en-US`,
 }
@@ -71,8 +72,6 @@ const fetchTV = {
 }
 
 const requests: {[index: string]: Request} = {
-  fetchTrending,
-  fetchTopRated,
   fetchActionMovies,
   fetchComedyMovies,
   fetchHorrorMovies,

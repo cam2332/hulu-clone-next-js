@@ -8,6 +8,16 @@ function Nav(): JSX.Element {
     <nav className='relative'>
       <div className='flex px-10 sm:px-20 text-2xl whitespace-nowrap
       space-x-10 sm:space-x-20 overflow-x-scroll scrollbar-hide p-1'>
+        <h2
+            onClick={() => router.push('/?genre=fetchTrending')}
+            className='cursor-pointer transition
+            duration-100 transform hover:scale-125 hover:text-white
+          active:text-red-500'>Trending</h2>
+        <h2
+            onClick={() => router.push('/?genre=fetchTopRated')}
+            className='cursor-pointer transition
+            duration-100 transform hover:scale-125 hover:text-white
+          active:text-red-500'>Top rated</h2>
         {Object.entries(requests).map(([key, { title, url }]) => (
           <h2
             key={key}

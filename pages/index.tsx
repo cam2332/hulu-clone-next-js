@@ -3,7 +3,11 @@ import Head from 'next/head'
 import Header from '../components/Header'
 import Nav from '../components/Nav'
 import Results from '../components/Results'
-import requests from '../utils/requests'
+import requests, {
+  fetchMoviesByGenreId,
+  fetchTrending,
+  fetchTopRated
+} from '../utils/requests'
 import MovieData from '../types/MovieData'
 import TvShowData from '../types/TvShowData'
 
@@ -25,12 +29,25 @@ export default function Home({
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const genre = (context.query.genre as string)
+  let request: MovieData[] | TvShowData[] = []
 
-  const request: MovieData[] | TvShowData[] = await fetch(
-    `https://api.themoviedb.org/3${requests[genre]?.url ||
-    requests.fetchTrending.url}`
-  ).then(res => res.json()).then(results => results.results)
-
+  if (genre.length > 0) {
+    if (genre === 'fetchTrending') {
+      request = await fetch(
+        `https://api.themoviedb.org/3${fetchTrending.url}`
+      ).then(res => res.json()).then(results => results.results)
+    } else if (genre === 'fetchTopRated') {
+      request = await fetch(
+        `https://api.themoviedb.org/3${fetchTopRated.url}`
+      ).then(res => res.json()).then(results => results.results)
+    } else {
+      request = await fetch(
+        `https://api.themoviedb.org/3${requests[genre]?.url ||
+        fetchMoviesByGenreId(genre) || requests.fetchTrending.url}`
+      ).then(res => res.json()).then(results => results.results)
+    }
+  }
+  
   return {
     props: {
       results: request

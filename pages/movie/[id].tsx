@@ -4,8 +4,8 @@ import Image from 'next/image'
 import Header from '../../components/Header'
 import requests, {
   fetchMovieDetails,
-  fetchMoviesByGenre,
-  fetchMovieCredits
+  fetchMovieCredits,
+  fetchMovieRecommendations
 } from '../../utils/requests'
 import MovieDetails from '../../components/MovieDetails'
 import AdditionalDetails from '../../components/AdditionalDetails'
@@ -79,7 +79,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   ).then((res) => res.json())
 
   const requestResults: MovieData[] | TvShowData[] = await fetch(
-    `https://api.themoviedb.org/3${fetchMoviesByGenre(requestMovie.genres[0])?.url ||
+    `https://api.themoviedb.org/3${fetchMovieRecommendations(movieId)?.url ||
     requests.fetchTrending.url}`
   ).then(res => res.json()).then(results => results.results)
 
