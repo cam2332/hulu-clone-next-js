@@ -13,6 +13,12 @@ export const fetchMovieDetails = (movieId: string): Request => {
     url: `/movie/${movieId}?api_key=${API_KEY}&append_to_response=videos`,
   }
 }
+export const fetchMovieCredits = (movieId: string): Request => {
+  return {
+    title: 'Movie Details',
+    url: `/movie/${movieId}/credits?api_key=${API_KEY}`,
+  }
+}
 export const fetchMoviesByGenre = (genre: GenreData): Request => {
   return {
     title: genre.name,

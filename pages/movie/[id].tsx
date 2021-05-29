@@ -4,7 +4,8 @@ import Image from 'next/image'
 import Header from '../../components/Header'
 import requests, {
   fetchMovieDetails,
-  fetchMoviesByGenre
+  fetchMoviesByGenre,
+  fetchMovieCredits
 } from '../../utils/requests'
 import MovieDetails from '../../components/MovieDetails'
 import AdditionalDetails from '../../components/AdditionalDetails'
@@ -12,14 +13,17 @@ import MovieDetailsData from '../../types/MovieDetailsData'
 import TvShowDetailsData from '../../types/TvShowDetailsData'
 import MovieData from '../../types/MovieData'
 import TvShowData from '../../types/TvShowData'
+import MovieTvShowCreditsData from '../../types/MovieTvShowCreditsData'
 
 export default function Details(
   {
     movie,
-    results
+    results,
+    credits
   }: {
     movie: MovieDetailsData | TvShowDetailsData,
-    results: MovieData[] | TvShowData[]
+    results: MovieData[] | TvShowData[],
+    credits: MovieTvShowCreditsData
   }): JSX.Element {
   const BASE_URL = 'https://image.tmdb.org/t/p/original'
 
@@ -62,7 +66,7 @@ export default function Details(
             h-full w-full -z-1' />
         <MovieDetails movie={movie} />
       </div>
-      <AdditionalDetails movie={movie} results={results} />
+      <AdditionalDetails movie={movie} results={results} credits={credits} />
     </div>
   )
 }
@@ -79,7 +83,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     requests.fetchTrending.url}`
   ).then(res => res.json()).then(results => results.results)
 
+  const requestMovieCredits: MovieTvShowCreditsData = await fetch(
+    `https://api.themoviedb.org/3${fetchMovieCredits(movieId).url}`,
+  ).then((res) => res.json())
+
   return {
-    props: { movie: requestMovie, results: requestResults }
+    props: {
+      movie: requestMovie,
+      results: requestResults,
+      credits: requestMovieCredits
+    }
   }
 }
