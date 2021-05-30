@@ -6,7 +6,10 @@ import Results from '../components/Results'
 import requests, {
   fetchMoviesByGenreId,
   fetchTrending,
-  fetchTopRated
+  fetchTopRated,
+  fetchMoviesByYear,
+  fetchMoviesByCastId,
+  fetchMoviesByCrewId
 } from '../utils/requests'
 import MovieData from '../types/MovieData'
 import TvShowData from '../types/TvShowData'
@@ -29,9 +32,24 @@ export default function Home({
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const genre = (context.query.genre as string)
+  const releaseYear = (context.query.release_year as string | undefined)
+  const castId = (context.query.castId as string | undefined)
+  const crewId = (context.query.crewId as string | undefined)
   let request: MovieData[] | TvShowData[] = []
 
-  if (genre.length > 0) {
+  if (castId) {
+    request = await fetch(
+      `https://api.themoviedb.org/3${fetchMoviesByCastId(castId)}`
+    ).then(res => res.json()).then(results => results.results)
+  } else if (crewId) {
+    request = await fetch(
+      `https://api.themoviedb.org/3${fetchMoviesByCrewId(crewId)}`
+    ).then(res => res.json()).then(results => results.results)
+  } else if (releaseYear) {
+    request = await fetch(
+      `https://api.themoviedb.org/3${fetchMoviesByYear(releaseYear)}`
+    ).then(res => res.json()).then(results => results.results)
+  } else if (genre.length > 0) {
     if (genre === 'fetchTrending') {
       request = await fetch(
         `https://api.themoviedb.org/3${fetchTrending.url}`

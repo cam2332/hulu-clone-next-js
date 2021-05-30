@@ -26,6 +26,15 @@ export const fetchMovieRecommendations = (movieId: string): Request => {
 export const fetchMoviesByGenreId = (genreId: string): string => {
   return `/discover/movie?api_key=${API_KEY}&with_genres=${genreId}`
 }
+export const fetchMoviesByYear = (year: string): string => {
+  return `/discover/movie?api_key=${API_KEY}&release_date.gte=${year}-01-01&release_date.lte=${year}-12-12`
+}
+export const fetchMoviesByCastId = (castId: string): string => {
+  return `/discover/movie?api_key=${API_KEY}&with_cast=${castId}`
+}
+export const fetchMoviesByCrewId = (crewId: string): string => {
+  return `/discover/movie?api_key=${API_KEY}&with_crew=${crewId}`
+}
 export const fetchTrending = {
   title: 'Trending',
   url: `/trending/all/week?api_key=${API_KEY}&language=en-US`,
