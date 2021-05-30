@@ -30,7 +30,7 @@ function AdditionalDetails({
     (movie as TvShowDetailsData).first_air_date.substring(0, 4)
 
   return (
-    <div className="h-full w-full bg-[#06202A]">
+    <div className="w-full bg-[#06202A] absolute top-full-94">
       <div
         className="flex space-x-9 px-10 md:px-20 border-b-2 border-gray-700">
         <div

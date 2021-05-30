@@ -36,7 +36,7 @@ export default function Details(
       </Head>
       <Header />
       <div
-        className='hidden md:block absolute top-0 h-full w-full -z-1 
+        className='hidden md:block absolute top-0 h-full-94 w-full -z-1 
           overflow-hidden'>
         <Image
           layout='fill'
@@ -59,7 +59,7 @@ export default function Details(
           }
           />
       </div>
-      <div className='pb-10 md:pb-0 relative md:static'>
+      <div className=''>
         <div
           className='absolute top-0 left-0 right-20 overflow-hidden
             bg-gradient-to-t md:bg-gradient-to-r from-[#204fa5] to-[#204ea500]

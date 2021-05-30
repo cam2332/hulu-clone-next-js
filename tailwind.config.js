@@ -11,6 +11,12 @@ module.exports = {
                 '1/2': '50%',
                 '2/3': '66%',
             },
+            inset: {
+                'full-94': 'calc(100% - 94px)'
+            },
+            height: {
+                'full-94': 'calc(100% - 94px)'
+            },
             zIndex: {
                 '-1': '-1',
             },
