@@ -37,13 +37,6 @@ function MovieDetails({ movie }: {
           </div>
           <p className='md:text-xl text-black font-medium'>PLAY</p>
         </div>
-        <div className='flex items-center justify-center w-32 md:w-44 
-        bg-white bg-opacity-30 rounded-sm space-x-3 cursor-pointer'>
-          <div className=''>
-            <ArrowRightIcon className='h-5 md:h-8 text-white' />
-          </div>
-          <p className='md:text-xl text-gray-50 font-medium '>DETAILS</p>
-        </div>
       </div>
     </div>
   )
