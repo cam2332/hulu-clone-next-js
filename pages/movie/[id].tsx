@@ -112,6 +112,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return null
   })
 
+  if (requestMovie === null) {
+    context.res.setHeader('location', '/movie/not_found_404')
+    context.res.statusCode = 302
+    context.res.end()
+  }
+
   return {
     props: {
       movie: requestMovie,
