@@ -5,4 +5,7 @@
     body {
         @apply bg-[#06202A] text-gray-300;
     }
+    .additional-details-grey-text {
+        @apply text-gray-400 hover:text-white md:text-lg cursor-pointer;
+    }
 }
