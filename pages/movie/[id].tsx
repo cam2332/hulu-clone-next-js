@@ -74,18 +74,43 @@ export default function Details(
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const movieId = (context.query.id as string)
 
-  const requestMovie: MovieDetailsData | TvShowDetailsData = await fetch(
+  const requestMovie: MovieDetailsData | TvShowDetailsData | null = await fetch(
     `https://api.themoviedb.org/3${fetchMovieDetails(movieId).url}`,
-  ).then((res) => res.json())
+  ).then((res) => res.json()).then((json) => {
+    if (json.hasOwnProperty('success')) {
+      if (json.success === false) {
+        return null
+      }
+    }
+    return json
+  }).catch((error) => {
+    return null
+  })
 
-  const requestResults: MovieData[] | TvShowData[] = await fetch(
+  const requestResults: MovieData[] | TvShowData[] | null = await fetch(
     `https://api.themoviedb.org/3${fetchMovieRecommendations(movieId)?.url ||
     requests.fetchTrending.url}`
-  ).then(res => res.json()).then(results => results.results)
+  ).then(res => res.json()).then(results => {
+    if (results.hasOwnProperty('results')) {
+      return results.results
+    }
+    return null
+  }).catch((error) => {
+    return null
+  })
 
-  const requestMovieCredits: MovieTvShowCreditsData = await fetch(
+  const requestMovieCredits: MovieTvShowCreditsData | null = await fetch(
     `https://api.themoviedb.org/3${fetchMovieCredits(movieId).url}`,
-  ).then((res) => res.json())
+  ).then((res) => res.json()).then((json) => {
+    if (json.hasOwnProperty('success')) {
+      if (json.success === false) {
+        return null
+      }
+    }
+    return json
+  }).catch((error) => {
+    return null
+  })
 
   return {
     props: {
