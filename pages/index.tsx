@@ -49,7 +49,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     request = await fetch(
       `https://api.themoviedb.org/3${fetchMoviesByYear(releaseYear)}`
     ).then(res => res.json()).then(results => results.results)
-  } else if (genre.length > 0) {
+  } else if (genre && genre.length > 0) {
     if (genre === 'fetchTrending') {
       request = await fetch(
         `https://api.themoviedb.org/3${fetchTrending.url}`
@@ -61,11 +61,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     } else {
       request = await fetch(
         `https://api.themoviedb.org/3${requests[genre]?.url ||
-        fetchMoviesByGenreId(genre) || requests.fetchTrending.url}`
+        fetchMoviesByGenreId(genre) || fetchTrending.url}`
       ).then(res => res.json()).then(results => results.results)
     }
+  } else {
+    request = await fetch(
+      `https://api.themoviedb.org/3${fetchTrending.url}`
+    ).then(res => res.json()).then(results => results.results)
   }
-  
+
   return {
     props: {
       results: request
