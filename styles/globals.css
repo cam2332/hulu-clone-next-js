@@ -8,4 +8,10 @@
     .additional-details-grey-text {
         @apply text-gray-400 hover:text-white md:text-lg cursor-pointer;
     }
+    .nav-text {
+        @apply cursor-pointer select-none transition duration-100 transform hover:scale-125 hover:text-white active:text-red-500
+    }
+    .results-container {
+        @apply px-5 my-10 sm:grid md:grid-cols-2 xl:grid-cols-3 3xl:flex flex-wrap justify-center
+    }
 }
