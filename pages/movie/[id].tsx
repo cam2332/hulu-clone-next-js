@@ -37,7 +37,7 @@ export default function Details(
       <Header />
       <div
         className='hidden md:block absolute top-0 h-full-94 w-full -z-1 
-          overflow-hidden'>
+          overflow-hidden pb-3/4 min-h-s65'>
         <Image
           layout='fill'
           objectFit='cover'
@@ -50,7 +50,7 @@ export default function Details(
       </div>
       <div
         className='md:hidden absolute top-0 h-full w-full -z-1 
-          overflow-hidden'>
+          overflow-hidden min-h-s65'>
         <Image
           layout='fill'
           objectFit='cover'
@@ -59,11 +59,11 @@ export default function Details(
           }
           />
       </div>
-      <div className=''>
+      <div className='min-h-s65'>
         <div
           className='absolute top-0 left-0 right-20 overflow-hidden
             bg-gradient-to-t md:bg-gradient-to-r from-[#204fa5] to-[#204ea500]
-            h-full w-full -z-1' />
+            h-full w-full -z-1 pb-3/4 min-h-s65' />
         <MovieDetails movie={movie} />
       </div>
       <AdditionalDetails movie={movie} results={results} credits={credits} />

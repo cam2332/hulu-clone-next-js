@@ -9,8 +9,8 @@ function MovieDetails({ movie }: {
   const [overviewExpanded, setOverviewExpanded] = React.useState(false)
 
   return (
-    <div className={`flex flex-col px-10 md:px-20 md:py-16 space-y-7 
-      md:space-y-14 min-h-full pt-2/3 ${overviewExpanded && 'pt-1/2'} md:pt-6`}>
+    <div className={`flex flex-col justify-end px-10 md:px-20 md:py-16 space-y-7 
+      md:space-y-14 min-h-s65 pb-20 md:pt-6`}>
       <p className='text-white font-bold text-3xl md:text-6xl'>
         {movie.title || movie.original_title}
       </p>

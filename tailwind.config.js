@@ -10,12 +10,17 @@ module.exports = {
             padding: {
                 '1/2': '50%',
                 '2/3': '66%',
+                '3/4': '75%'
             },
             inset: {
                 'full-94': 'calc(100% - 94px)'
             },
             height: {
                 'full-94': 'calc(100% - 94px)'
+            },
+            minHeight: {
+                's35': '35vh',
+                's65': '65vh'
             },
             zIndex: {
                 '-1': '-1',
