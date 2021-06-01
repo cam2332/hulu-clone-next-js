@@ -39,7 +39,7 @@ export default function Details(
       <Header />
       <div
         className='hidden md:block absolute top-0 h-full-94 w-full -z-1 
-          overflow-hidden pb-3/4 min-h-s65'>
+          overflow-hidden pb-3/4 md:pb-0 sm-landscape:pb-3/4 min-h-s65'>
         <Image
           layout='fill'
           objectFit='cover'

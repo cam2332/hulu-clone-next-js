@@ -6,6 +6,7 @@ module.exports = {
         extend: {
             screens: {
                 '3xl': '2000px',
+                'sm-landscape': { 'raw': '(hover: none) and (min-width: 640px)' }
             },
             padding: {
                 '1/2': '50%',
