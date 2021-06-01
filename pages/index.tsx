@@ -11,12 +11,14 @@ import requests, {
   fetchMoviesByCastId,
   fetchMoviesByCrewId
 } from '../utils/requests'
-import MovieData from '../types/MovieData'
-import TvShowData from '../types/TvShowData'
+import ResultsData from '../types/ResultsData'
 
 export default function Home({
-  results
-}: { results: MovieData[] | TvShowData[] }): JSX.Element {
+  page,
+  results,
+  totalPages,
+  totalResults
+}: ResultsData): JSX.Element {
   return (
     <div>
       <Head>
@@ -25,7 +27,11 @@ export default function Home({
       </Head>
       <Header />
       <Nav />
-      <Results results={results} />
+      <Results
+        page={page}
+        results={results}
+        totalPages={totalPages} 
+        totalResults={totalResults} />
     </div>
   )
 }
@@ -35,44 +41,69 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const releaseYear = (context.query.release_year as string | undefined)
   const castId = (context.query.castId as string | undefined)
   const crewId = (context.query.crewId as string | undefined)
-  let request: MovieData[] | TvShowData[] = []
+  const page = parseInt((context.query.page as string | undefined) || '1')
+  let request: ResultsData = {
+    page: 0,
+    results: [],
+    totalPages: 0,
+    totalResults: 0
+  }
+
+  const extractResults = (results: any): ResultsData => {
+    return {
+      page: results.page,
+      results: results.results,
+      totalPages: results.total_pages,
+      totalResults: results.total_results
+    }
+  }
 
   if (castId) {
     request = await fetch(
-      `https://api.themoviedb.org/3${fetchMoviesByCastId(castId)}`
-    ).then(res => res.json()).then(results => results.results)
+      `https://api.themoviedb.org/3${fetchMoviesByCastId(castId, page)}`
+    ).then(res => res.json())
+    .then(results => extractResults(results))
   } else if (crewId) {
     request = await fetch(
-      `https://api.themoviedb.org/3${fetchMoviesByCrewId(crewId)}`
-    ).then(res => res.json()).then(results => results.results)
+      `https://api.themoviedb.org/3${fetchMoviesByCrewId(crewId, page)}`
+    ).then(res => res.json())
+    .then(results => extractResults(results))
   } else if (releaseYear) {
     request = await fetch(
-      `https://api.themoviedb.org/3${fetchMoviesByYear(releaseYear)}`
-    ).then(res => res.json()).then(results => results.results)
+      `https://api.themoviedb.org/3${fetchMoviesByYear(releaseYear, page)}`
+    ).then(res => res.json())
+    .then(results => extractResults(results))
   } else if (genre && genre.length > 0) {
     if (genre === 'fetchTrending') {
       request = await fetch(
-        `https://api.themoviedb.org/3${fetchTrending.url}`
-      ).then(res => res.json()).then(results => results.results)
+        `https://api.themoviedb.org/3${fetchTrending(page)}`
+      ).then(res => res.json())
+      .then(results => extractResults(results))
     } else if (genre === 'fetchTopRated') {
       request = await fetch(
-        `https://api.themoviedb.org/3${fetchTopRated.url}`
-      ).then(res => res.json()).then(results => results.results)
+        `https://api.themoviedb.org/3${fetchTopRated(page)}`
+      ).then(res => res.json())
+      .then(results => extractResults(results))
     } else {
       request = await fetch(
         `https://api.themoviedb.org/3${requests[genre]?.url ||
-        fetchMoviesByGenreId(genre) || fetchTrending.url}`
-      ).then(res => res.json()).then(results => results.results)
+        fetchMoviesByGenreId(genre, page) || fetchTrending(page)}`
+      ).then(res => res.json())
+      .then(results => extractResults(results))
     }
   } else {
     request = await fetch(
-      `https://api.themoviedb.org/3${fetchTrending.url}`
-    ).then(res => res.json()).then(results => results.results)
+      `https://api.themoviedb.org/3${fetchTrending(page)}`
+    ).then(res => res.json())
+    .then(results => extractResults(results))
   }
 
   return {
     props: {
-      results: request
+      page: request.page,
+      results: request.results,
+      totalPages: request.totalPages,
+      totalResults: request.totalResults
     }
   }
 }

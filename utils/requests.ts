@@ -11,37 +11,29 @@ export const fetchMovieDetails = (movieId: string): Request => {
     url: `/movie/${movieId}?api_key=${API_KEY}&append_to_response=videos`,
   }
 }
-export const fetchMovieCredits = (movieId: string): Request => {
-  return {
-    title: 'Movie Details',
-    url: `/movie/${movieId}/credits?api_key=${API_KEY}`,
-  }
+export const fetchMovieCredits = (movieId: string): string => {
+  return `/movie/${movieId}/credits?api_key=${API_KEY}`
 }
-export const fetchMovieRecommendations = (movieId: string): Request => {
-  return {
-    title: 'Movie Recommendations',
-    url: `/movie/${movieId}/recommendations?api_key=${API_KEY}`,
-  }
+export const fetchMovieRecommendations = (movieId: string): string => {
+  return `/movie/${movieId}/recommendations?api_key=${API_KEY}`
 }
-export const fetchMoviesByGenreId = (genreId: string): string => {
-  return `/discover/movie?api_key=${API_KEY}&with_genres=${genreId}`
+export const fetchMoviesByGenreId = (genreId: string, page: number): string => {
+  return `/discover/movie?api_key=${API_KEY}&with_genres=${genreId}&page=${page}`
 }
-export const fetchMoviesByYear = (year: string): string => {
-  return `/discover/movie?api_key=${API_KEY}&release_date.gte=${year}-01-01&release_date.lte=${year}-12-12`
+export const fetchMoviesByYear = (year: string, page: number): string => {
+  return `/discover/movie?api_key=${API_KEY}&release_date.gte=${year}-01-01&release_date.lte=${year}-12-12&page=${page}`
 }
-export const fetchMoviesByCastId = (castId: string): string => {
-  return `/discover/movie?api_key=${API_KEY}&with_cast=${castId}`
+export const fetchMoviesByCastId = (castId: string, page: number): string => {
+  return `/discover/movie?api_key=${API_KEY}&with_cast=${castId}&page=${page}`
 }
-export const fetchMoviesByCrewId = (crewId: string): string => {
-  return `/discover/movie?api_key=${API_KEY}&with_crew=${crewId}`
+export const fetchMoviesByCrewId = (crewId: string, page: number): string => {
+  return `/discover/movie?api_key=${API_KEY}&with_crew=${crewId}&page=${page}`
 }
-export const fetchTrending = {
-  title: 'Trending',
-  url: `/trending/all/week?api_key=${API_KEY}&language=en-US`,
+export const fetchTrending = (page: number): string => {
+  return `/trending/all/week?api_key=${API_KEY}&language=en-US&page=${page}`
 }
-export const fetchTopRated = {
-  title: 'Top rated',
-  url: `/movie/top_rated?api_key=${API_KEY}&language=en-US`,
+export const fetchTopRated = (page: number): string => {
+  return `/movie/top_rated?api_key=${API_KEY}&language=en-US&page=${page}`
 }
 const fetchActionMovies = {
   title: 'Action',

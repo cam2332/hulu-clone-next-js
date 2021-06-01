@@ -2,7 +2,8 @@ import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import Header from '../../components/Header'
-import requests, {
+import {
+  fetchTrending,
   fetchMovieDetails,
   fetchMovieCredits,
   fetchMovieRecommendations
@@ -14,6 +15,7 @@ import TvShowDetailsData from '../../types/TvShowDetailsData'
 import MovieData from '../../types/MovieData'
 import TvShowData from '../../types/TvShowData'
 import MovieTvShowCreditsData from '../../types/MovieTvShowCreditsData'
+import ResultsData from '../../types/ResultsData'
 
 export default function Details(
   {
@@ -21,7 +23,7 @@ export default function Details(
     results,
     credits
   }: {
-    movie: MovieDetailsData | TvShowDetailsData,
+    movie: MovieDetailsData,
     results: MovieData[] | TvShowData[],
     credits: MovieTvShowCreditsData
   }): JSX.Element {
@@ -73,6 +75,16 @@ export default function Details(
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const movieId = (context.query.id as string)
+  const page = parseInt((context.query.page as string | null) || '1')
+
+  const extractResults = (results: any): ResultsData => {
+    return {
+      page: results.page,
+      results: results.results,
+      totalPages: results.total_pages,
+      totalResults: results.total_results
+    }
+  }
 
   const requestMovie: MovieDetailsData | TvShowDetailsData | null = await fetch(
     `https://api.themoviedb.org/3${fetchMovieDetails(movieId).url}`,
@@ -87,12 +99,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return null
   })
 
-  const requestResults: MovieData[] | TvShowData[] | null = await fetch(
-    `https://api.themoviedb.org/3${fetchMovieRecommendations(movieId)?.url ||
-    requests.fetchTrending.url}`
+  const requestResults: ResultsData | null = await fetch(
+    `https://api.themoviedb.org/3${fetchMovieRecommendations(movieId) ||
+    fetchTrending(page)}`
   ).then(res => res.json()).then(results => {
     if (results.hasOwnProperty('results')) {
-      return results.results
+      return extractResults(results)
     }
     return null
   }).catch((error) => {
@@ -100,7 +112,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   })
 
   const requestMovieCredits: MovieTvShowCreditsData | null = await fetch(
-    `https://api.themoviedb.org/3${fetchMovieCredits(movieId).url}`,
+    `https://api.themoviedb.org/3${fetchMovieCredits(movieId)}`,
   ).then((res) => res.json()).then((json) => {
     if (json.hasOwnProperty('success')) {
       if (json.success === false) {
@@ -112,7 +124,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return null
   })
 
-  if (requestMovie === null) {
+  if (requestMovie === null || requestResults === null) {
     context.res.setHeader('location', '/movie/not_found_404')
     context.res.statusCode = 302
     context.res.end()
@@ -120,9 +132,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      movie: requestMovie,
-      results: requestResults,
-      credits: requestMovieCredits
+      movie: requestMovie,      
+      credits: requestMovieCredits,
+      page: requestResults?.page,
+      results: requestResults?.results,
+      totalPages: requestResults?.totalPages,
+      totalResults: requestResults?.totalResults
     }
   }
 }

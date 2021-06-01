@@ -68,7 +68,7 @@ function AdditionalDetails({
       </div>
       {tab === 0 &&
         <div className='px-10 md:px-20'>
-          <Results results={results} />
+          <Results page={0} totalPages={0} totalResults={0} results={results} />
         </div>
       }
       {movie.videos.results && tab === 1 &&
