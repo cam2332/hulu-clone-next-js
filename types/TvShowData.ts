@@ -1,7 +1,7 @@
 export default interface TvShowData {
   id: number
-	title: string
-	original_title: string
+	name: string
+	original_name: string
 	poster_path: string
 	popularity: number
 	backdrop_path: string
@@ -12,4 +12,5 @@ export default interface TvShowData {
 	original_language: string
 	vote_count: number
 	first_air_date: string
+	media_type: string
 }
