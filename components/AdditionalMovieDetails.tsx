@@ -4,8 +4,6 @@ import { useRouter } from 'next/router'
 import FlipMove from 'react-flip-move'
 import MovieData from '../types/MovieData'
 import MovieDetailsData from '../types/MovieDetailsData'
-import TvShowDetailsData from '../types/TvShowDetailsData'
-import TvShowData from '../types/TvShowData'
 import Results from './Results'
 import VideoData from '../types/VideoData'
 import MovieTvShowCreditsData from '../types/MovieTvShowCreditsData'
@@ -15,8 +13,8 @@ function AdditionalDetails({
   results,
   credits
 }: {
-  movie: MovieDetailsData | TvShowDetailsData,
-  results: MovieData[] | TvShowData[],
+  movie: MovieDetailsData,
+  results: MovieData[],
   credits: MovieTvShowCreditsData
   }): JSX.Element {
   const BASE_URL = 'https://image.tmdb.org/t/p/original'
@@ -24,10 +22,7 @@ function AdditionalDetails({
   const [tab, setTab] = useState(0)
   const [castListExpanded, setCastListExpanded] = useState(false)
   const [crewListExpanded, setCrewListExpanded] = useState(false)
-  const releaseYear = (movie as MovieDetailsData).release_date &&
-    (movie as MovieDetailsData).release_date.substring(0, 4) ||
-    (movie as TvShowDetailsData).first_air_date &&
-    (movie as TvShowDetailsData).first_air_date.substring(0, 4)
+  const releaseYear = movie.release_date && movie.release_date.substring(0, 4)
 
   return (
     <div className="w-full min-h-s35 bg-[#06202A] ">
@@ -159,7 +154,6 @@ function AdditionalDetails({
                   </p>
             )}
         </div>
-        {/* change to div and make list of links to genres */}
         <div className='flex'>
           {movie.genres && movie.genres.length > 0 &&
             movie.genres.map((genre, index) =>

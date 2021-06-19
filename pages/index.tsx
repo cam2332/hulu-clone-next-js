@@ -5,11 +5,15 @@ import Nav from '../components/Nav'
 import Results from '../components/Results'
 import requests, {
   fetchMoviesByGenreId,
+  fetchTvShowsByGenreId,
   fetchTrending,
   fetchTopRated,
   fetchMoviesByYear,
+  fetchTvShowsByYear,
   fetchMoviesByCastId,
-  fetchMoviesByCrewId
+  fetchTvShowsByCastId,
+  fetchMoviesByCrewId,
+  fetchTvShowsByCrewId
 } from '../utils/requests'
 import ResultsData from '../types/ResultsData'
 
@@ -42,6 +46,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const castId = (context.query.castId as string | undefined)
   const crewId = (context.query.crewId as string | undefined)
   const page = parseInt((context.query.page as string | undefined) || '1')
+  const isTv: boolean = (context.query.tv as string | undefined) === 'true'
   let request: ResultsData = {
     page: 0,
     results: [],
@@ -57,20 +62,27 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       totalResults: results.total_results
     }
   }
+  console.log(isTv, 'gurl', genre, requests[genre])
 
   if (castId) {
     request = await fetch(
-      `https://api.themoviedb.org/3${fetchMoviesByCastId(castId, page)}`
+      `https://api.themoviedb.org/3${isTv ?
+        fetchMoviesByCastId(castId, page) :
+        fetchTvShowsByCastId(castId, page)}`
     ).then(res => res.json())
     .then(results => extractResults(results))
   } else if (crewId) {
     request = await fetch(
-      `https://api.themoviedb.org/3${fetchMoviesByCrewId(crewId, page)}`
+      `https://api.themoviedb.org/3${isTv ?
+        fetchMoviesByCrewId(crewId, page) :
+        fetchTvShowsByCrewId(crewId, page)}`
     ).then(res => res.json())
     .then(results => extractResults(results))
   } else if (releaseYear) {
     request = await fetch(
-      `https://api.themoviedb.org/3${fetchMoviesByYear(releaseYear, page)}`
+      `https://api.themoviedb.org/3${isTv ?
+        fetchTvShowsByYear(releaseYear, page) :
+        fetchMoviesByYear(releaseYear, page)}`
     ).then(res => res.json())
     .then(results => extractResults(results))
   } else if (genre && genre.length > 0) {
@@ -87,7 +99,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     } else {
       request = await fetch(
         `https://api.themoviedb.org/3${requests[genre]?.url ||
-        fetchMoviesByGenreId(genre, page) || fetchTrending(page)}`
+      (isTv ?
+        fetchMoviesByGenreId(genre, page) :
+        fetchTvShowsByGenreId(genre, page)) ||
+        fetchTrending(page)}`
       ).then(res => res.json())
       .then(results => extractResults(results))
     }

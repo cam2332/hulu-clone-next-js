@@ -11,11 +11,16 @@ const Thumbnail = forwardRef((
 ) => {
   const BASE_URL = 'https://image.tmdb.org/t/p/original/'
   const router = useRouter()
+  const mediaType = result.media_type ? result.media_type :
+    ((result as TvShowData).name !== undefined ||
+      (result as TvShowData).original_name !== undefined) ?
+    'tv' :
+    'movie'
 
   return (
     <div
       ref={ref}
-      onClick={() => router.push(`/movie/${result.id}`)}
+      onClick={() => router.push(`/${mediaType}/${result.id}`)}
       className='p-2 group cursor-pointer transition duration-200
         ease-in transform sm:hover:scale-105 hover:z-50'>
       <Image
@@ -33,7 +38,10 @@ const Thumbnail = forwardRef((
         <h2
           className='truncate max-w-md mt-1 text-2xl text-white transition-all
             duration-100 ease-in-out group-hover:font-bold'>
-          {result.title || result.original_title}
+          {(result as MovieData).title ||
+            (result as MovieData).original_title ||
+            (result as TvShowData).name ||
+            (result as TvShowData).original_name}
         </h2>
         <p className='flex items-center opacity-0 group-hover:opacity-100'>
           {(result as MovieData).release_date ||

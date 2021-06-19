@@ -5,29 +5,47 @@ interface Request {
   url: string
 }
 
-export const fetchMovieDetails = (movieId: string): Request => {
-  return {
-    title: 'Movie Details',
-    url: `/movie/${movieId}?api_key=${API_KEY}&append_to_response=videos`,
-  }
+export const fetchMovieDetails = (movieId: string): string => {
+  return `/movie/${movieId}?api_key=${API_KEY}&append_to_response=videos`
+}
+export const fetchTvShowDetails = (showId: string): string => {
+  return `/tv/${showId}?api_key=${API_KEY}&append_to_response=videos`
 }
 export const fetchMovieCredits = (movieId: string): string => {
   return `/movie/${movieId}/credits?api_key=${API_KEY}`
 }
+export const fetchTvShowCredits = (showId: string): string => {
+  return `/tv/${showId}/credits?api_key=${API_KEY}`
+}
 export const fetchMovieRecommendations = (movieId: string): string => {
   return `/movie/${movieId}/recommendations?api_key=${API_KEY}`
+}
+export const fetchTvShowRecommendations = (showId: string): string => {
+  return `/tv/${showId}/recommendations?api_key=${API_KEY}`
 }
 export const fetchMoviesByGenreId = (genreId: string, page: number): string => {
   return `/discover/movie?api_key=${API_KEY}&with_genres=${genreId}&page=${page}`
 }
+export const fetchTvShowsByGenreId = (genreId: string, page: number): string => {
+  return `/discover/tv?api_key=${API_KEY}&with_genres=${genreId}&page=${page}`
+}
 export const fetchMoviesByYear = (year: string, page: number): string => {
   return `/discover/movie?api_key=${API_KEY}&release_date.gte=${year}-01-01&release_date.lte=${year}-12-12&page=${page}`
+}
+export const fetchTvShowsByYear = (year: string, page: number): string => {
+  return `/discover/tv?api_key=${API_KEY}&release_date.gte=${year}-01-01&release_date.lte=${year}-12-12&page=${page}`
 }
 export const fetchMoviesByCastId = (castId: string, page: number): string => {
   return `/discover/movie?api_key=${API_KEY}&with_cast=${castId}&page=${page}`
 }
+export const fetchTvShowsByCastId = (castId: string, page: number): string => {
+  return `/discover/tv?api_key=${API_KEY}&with_cast=${castId}&page=${page}`
+}
 export const fetchMoviesByCrewId = (crewId: string, page: number): string => {
   return `/discover/movie?api_key=${API_KEY}&with_crew=${crewId}&page=${page}`
+}
+export const fetchTvShowsByCrewId = (crewId: string, page: number): string => {
+  return `/discover/tv?api_key=${API_KEY}&with_crew=${crewId}&page=${page}`
 }
 export const fetchTrending = (page: number): string => {
   return `/trending/all/week?api_key=${API_KEY}&language=en-US&page=${page}`
