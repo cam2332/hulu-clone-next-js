@@ -5,6 +5,7 @@ module.exports = {
     theme: {
         extend: {
             screens: {
+                '2xl': '1600px',
                 '3xl': '2000px',
                 'sm-landscape': { 'raw': '(hover: none) and (min-width: 640px)' }
             },
