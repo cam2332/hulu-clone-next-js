@@ -100,8 +100,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       request = await fetch(
         `https://api.themoviedb.org/3${requests[genre]?.url ||
       (isTv ?
-        fetchMoviesByGenreId(genre, page) :
-        fetchTvShowsByGenreId(genre, page)) ||
+        fetchTvShowsByGenreId(genre, page) :
+        fetchMoviesByGenreId(genre, page)) ||
         fetchTrending(page)}`
       ).then(res => res.json())
       .then(results => extractResults(results))

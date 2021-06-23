@@ -24,7 +24,11 @@ function Results({ page, results, totalPages }: ResultsData): JSX.Element {
           onChange={(newPage: number) =>
             router.push({
               pathname: router.pathname,
-              query: { page: newPage }
+              query: {
+                genre: router.query.genre,
+                tv: router.query.tv,
+                page: newPage
+              },
             })
           } />
         </div>

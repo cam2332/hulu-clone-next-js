@@ -4,8 +4,6 @@ import { useRouter } from 'next/router'
 import FlipMove from 'react-flip-move'
 import TvShowDetailsData from '../types/TvShowDetailsData'
 import TvShowData from '../types/TvShowData'
-import Results from './Results'
-import VideoData from '../types/VideoData'
 import MovieTvShowCreditsData from '../types/MovieTvShowCreditsData'
 
 function AdditionalTvShowDetails({
@@ -22,7 +20,9 @@ function AdditionalTvShowDetails({
   const [tab, setTab] = useState(0)
   const [castListExpanded, setCastListExpanded] = useState(false)
   const [crewListExpanded, setCrewListExpanded] = useState(false)
-  const releaseYear = tvShow.first_air_date && tvShow.first_air_date.substring(0, 4)
+  const [seasonNumber, setSeasonNumber] = useState(1)
+  const releaseYear = tvShow.first_air_date &&
+    tvShow.first_air_date.substring(0, 4)
 
   return (
     <div className="w-full min-h-s35 bg-[#06202A] ">
@@ -35,21 +35,9 @@ function AdditionalTvShowDetails({
             onClick={() => setTab(0)}
             className="text-gray-300 hover:text-[#70a2ff] 
               font-bold cursor-pointer">
-            YOU MAY ALSO LIKE
+            EPISODES
           </p>
         </div>
-        {tvShow.videos.results && (
-          <div
-            className={`py-8 border-b-4
-              ${tab === 1 ? 'border-[#3fa4e7]' : 'border-[#06202A]'}`}>
-            <p
-              onClick={() => setTab(1)}
-              className="text-gray-300 hover:text-[#70a2ff] 
-                font-bold cursor-pointer">
-              EXTRAS
-              </p>
-          </div>
-        )}
         <div
           className={`py-8 border-b-4 
             ${tab === 2 ? 'border-[#3fa4e7]' : 'border-[#06202A]'}`}>
@@ -61,48 +49,71 @@ function AdditionalTvShowDetails({
           </p>
         </div>
       </div>
-      {tab === 0 &&
-        <div className='px-10 md:px-20'>
-          <Results page={0} totalPages={0} totalResults={0} results={results} />
-        </div>
-      }
-      {tvShow.videos.results && tab === 1 &&
-        <div className='px-10 md:px-20'>
-        <FlipMove className='results-container'>
-          {tvShow.videos.results.map((video: VideoData) => (
-            <div
-              key={video.id}
-              className='p-2 group cursor-pointer transition duration-200
-                ease-in transform sm:hover:scale-105 hover:z-50'>
-              <Image
-                layout='responsive'
-                height='480'
-                width='854'
-                src={
-                  `${BASE_URL}${tvShow.backdrop_path ||
-                    tvShow.poster_path}` ||
-                  `${BASE_URL}${tvShow.poster_path}`
-                }
-              />
-              <div className='p-2'>
-                <p className='text-xl text-white'>
-                  {`${tvShow.name || tvShow.original_name} - ${video.type}`}
-                </p>
-              </div>
-            </div>
+      {(tvShow as any)[`season/${seasonNumber}`] && tab === 0 &&
+        <div className='p-10 md:px-20'>
+        <select className='bg-transparent md:hidden'
+          onChange={(event) => setSeasonNumber(parseInt(event.target.value))}
+          value={seasonNumber}>
+          {Array(tvShow.number_of_seasons).fill(null).
+            map((_, i) => i + 1).map((value) => (
+            <option key={value} value={value}>Season {value}</option>
           ))}
-        </FlipMove>
+        </select>
+        <div className='hidden md:flex flex-row space-x-6'>
+          <p>Season</p>
+          {Array(tvShow.number_of_seasons).fill(null).
+            map((_, i) => i + 1).map((value) => (
+              <p 
+                key={value}
+                onClick={() => setSeasonNumber(value)}
+                className={`cursor-pointer font-medium hover:text-white
+              ${seasonNumber === value ? 'text-white font-bold' : 'text-gray-400'}
+            `}>{value}</p>
+          ))}
+        </div>
+          <FlipMove className='results-container'>
+          {(tvShow as any)[`season/${seasonNumber}`].
+            episodes.map((episode: any, index: number) => (
+              <div
+                key={episode.id}
+                className='p-2 group cursor-pointer transition duration-200
+                  ease-in transform sm:hover:scale-105 hover:z-50'>
+                <Image
+                  layout='responsive'
+                  height='480'
+                  width='854'
+                  src={
+                    `${BASE_URL}${episode.still_path ||
+                      tvShow.backdrop_path ||
+                      tvShow.poster_path}` ||
+                    `${BASE_URL}${tvShow.poster_path}`
+                  }
+                />
+                <div className='p-2'>
+                  <p className='text-sm text-gray-400'>
+                    {`EPISODE ${index + 1}`}
+                  </p>
+                  <p className='text-lg text-white font-medium'>
+                    {`${episode.name}`}
+                  </p>
+                  <p className='text-sm text-gray-400'>
+                    {`${episode.overview}`}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </FlipMove>
         </div>
       }
       {tab === 2 &&
         <div className='px-10 md:px-20 space-y-4 md:space-y-6 py-8 md:py-16'>
           <p className='text-white font-bold md:text-xl'>
-              About this movie
+              About this show
             </p>
             <p className='text-white font-bold text-2xl md:text-5xl'>
               {tvShow.name || tvShow.original_name}
           </p>
-          <div className='flex flex-wrap items-center space-x-3 '>
+          <div className='flex flex-wrap items-center space-x-3'>
             <p
               onClick={() => setCastListExpanded(!castListExpanded)}
               className='font-bold additional-details-grey-text'>
@@ -127,14 +138,14 @@ function AdditionalTvShowDetails({
                 </p>
             )}
           </div>
-          <div className='flex space-x-2'>
+          <div className='flex flex-wrap items-center space-x-3'>
             <p
               onClick={() => setCrewListExpanded(!crewListExpanded)}
               className='font-bold additional-details-grey-text'>
-              Directors:
+              Producers:
             </p>
             {!crewListExpanded && credits.crew.
-              filter((crew) => crew.job === 'Director').slice(0, 2).map(
+              filter((crew) => crew.department === 'Production').slice(0, 2).map(
                 (crew, index) =>
                   <p
                     key={index}
@@ -144,7 +155,7 @@ function AdditionalTvShowDetails({
                   </p>
             )}
             {crewListExpanded && credits.crew.
-              filter((crew) => crew.job === 'Director').map(
+              filter((crew) => crew.department === 'Production').map(
                 (crew, index) =>
                   <p
                     key={index}

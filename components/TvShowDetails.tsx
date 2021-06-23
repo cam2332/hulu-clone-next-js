@@ -10,9 +10,14 @@ function TvShowDetails({ tvShow }: {
   return (
     <div className={`flex flex-col justify-end px-10 md:px-20 md:py-16 space-y-7 
       md:space-y-14 min-h-s65 pb-20 md:pt-6`}>
-      <p className='text-white font-bold text-3xl md:text-6xl'>
-        {tvShow.name || tvShow.original_name}
-      </p>
+      <div>
+        <p className='text-gray-400 font-bold text-xs md:text-sm'>
+          {`${tvShow.number_of_seasons} ${tvShow.number_of_seasons > 1 ? 'SEASONS' : 'SEASON'} AVAILABLE (${tvShow.number_of_episodes} EPISODES)`}
+        </p>
+        <p className='text-white font-bold text-3xl md:text-6xl'>
+          {tvShow.name || tvShow.original_name}
+        </p>
+      </div>
       <p
         onClick={() => setOverviewExpanded(!overviewExpanded)}
         className={`text-white max-w-sm md:max-w-2xl md:text-xl 

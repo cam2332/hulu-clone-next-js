@@ -5,6 +5,7 @@ import Header from '../../components/Header'
 import {
   fetchTrending,
   fetchTvShowDetails,
+  fetchTvShowDetailsWithSeasons,
   fetchTvShowCredits,
   fetchTvShowRecommendations
 } from '../../utils/requests'
@@ -86,13 +87,30 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const requestTvShow: TvShowDetailsData | null = await fetch(
     `https://api.themoviedb.org/3${fetchTvShowDetails(tvShowId)}`,
-  ).then((res) => res.json()).then((json) => {
-    if (json.hasOwnProperty('success')) {
-      if (json.success === false) {
+  ).then((res) => res.json()).then(async (jsonTvShowDetails) => {
+    if (jsonTvShowDetails.hasOwnProperty('success')) {
+      if (jsonTvShowDetails.success === false) {
         return null
       }
     }
-    return json
+
+    const requestTvShowWithSeasons: TvShowDetailsData | null = await fetch(
+      `https://api.themoviedb.org/3${fetchTvShowDetailsWithSeasons(
+        tvShowId,
+        jsonTvShowDetails.seasons.length
+      )}`,
+    ).then((res) => res.json()).then((json) => {
+      if (json.hasOwnProperty('success')) {
+        if (json.success === false) {
+          return null
+        }
+      }
+      return json
+    }).catch((error) => {
+      return null
+    })
+    
+    return requestTvShowWithSeasons
   }).catch((error) => {
     return null
   })
