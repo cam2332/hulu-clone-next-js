@@ -22,9 +22,9 @@ function Nav(): JSX.Element {
         ))}
       </div>
       <div className='absolute top-0 left-0 bg-gradient-to-r
-      from-[#06202A] h-10 w-1/12' />
+      from-[#06202A] h-10 w-14' />
       <div className='absolute top-0 right-0 bg-gradient-to-l
-      from-[#06202A] h-10 w-1/12' />
+      from-[#06202A] h-10 w-14' />
     </nav>
   )
 }
