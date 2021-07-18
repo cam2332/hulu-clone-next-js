@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import {
   CollectionIcon,
   SearchIcon,
@@ -14,6 +15,7 @@ import {
 import Switch from 'react-switch'
 
 function Header(): JSX.Element {
+  const router = useRouter()
   const [menuVisible, setMenuVisible] = useState(false)
   const [nightMode, setNightMode] = useState(false)
 
@@ -25,6 +27,7 @@ function Header(): JSX.Element {
           src='/hulu-white.png'
           width={60}
           height={20}
+          onClick={() => router.push('/')}
         />
         <div className="flex-row items-center hidden space-x-3 text-white cursor-pointer md:flex">
           <CollectionIcon className="w-8 h-7" />
